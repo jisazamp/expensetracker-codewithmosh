@@ -12,6 +12,14 @@ export type Expense = {
 export const App = () => {
   const [expenses, setExpenses] = useState<Expense[]>([])
   const [filteredExpenses, setFilteredExpenses] = useState<Expense[]>([])
+  const [categories, setCategories] = useState<string[]>([
+    'All',
+    'Food',
+    'Health',
+    'Housing',
+    'Other',
+    'Transport',
+  ])
   const [category, setCategory] = useState('All')
 
   useEffect(() => {
@@ -39,16 +47,18 @@ export const App = () => {
           backgroundColor: '#f5f5f5',
         }}
       >
-        <MenuItem value='All'>All</MenuItem>
-        <MenuItem value='Food'>Food</MenuItem>
-        <MenuItem value='Transport'>Transport</MenuItem>
-        <MenuItem value='Housing'>Housing</MenuItem>
-        <MenuItem value='Health'>Health</MenuItem>
-        <MenuItem value='Other'>Other</MenuItem>
+        {categories.map((category) => {
+          return (
+            <MenuItem key={category} value={category}>
+              {category}
+            </MenuItem>
+          )
+        })}
       </Select>
 
       <ExpenseList
         expenses={category === 'All' ? expenses : filteredExpenses}
+        setExpenses={setExpenses}
       />
     </>
   )

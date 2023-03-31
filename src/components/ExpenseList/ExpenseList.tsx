@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Container,
   Table,
   TableBody,
@@ -8,15 +9,24 @@ import {
   TableHead,
   TableRow,
   Typography,
+  useMediaQuery,
 } from '@mui/material'
+import { BsTrash } from 'react-icons/bs'
 import { styles } from './styles'
 import type { Expense } from '../../App'
 
 interface Props {
   expenses: Expense[]
+  setExpenses: React.Dispatch<React.SetStateAction<Expense[]>>
 }
 
-export const ExpenseList = ({ expenses }: Props) => {
+export const ExpenseList = ({ expenses, setExpenses }: Props) => {
+  const matches = useMediaQuery('(min-width: 768px)')
+
+  const handleExpenseDeletion = (expense: Expense): void => {
+    setExpenses((prevState) => prevState.filter((el) => el.id !== expense.id))
+  }
+
   if (expenses.length === 0) {
     return (
       <Container>
@@ -56,6 +66,7 @@ export const ExpenseList = ({ expenses }: Props) => {
                 <TableCell>Expense</TableCell>
                 <TableCell>Amount</TableCell>
                 <TableCell>Category</TableCell>
+                <TableCell />
               </TableRow>
             </TableHead>
             <TableBody>
@@ -64,6 +75,21 @@ export const ExpenseList = ({ expenses }: Props) => {
                   <TableCell>{expense.description}</TableCell>
                   <TableCell>{expense.amount}</TableCell>
                   <TableCell>{expense.category}</TableCell>
+                  <TableCell
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Button
+                      variant='outlined'
+                      color='error'
+                      onClick={() => handleExpenseDeletion(expense)}
+                    >
+                      {matches ? 'Delete' : <BsTrash />}
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
