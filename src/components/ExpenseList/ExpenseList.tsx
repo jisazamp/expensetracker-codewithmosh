@@ -6,6 +6,7 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  TableFooter,
   TableHead,
   TableRow,
   Typography,
@@ -93,6 +94,17 @@ export const ExpenseList = ({ expenses, setExpenses }: Props) => {
                 </TableRow>
               ))}
             </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TableCell>Total</TableCell>
+                <TableCell>
+                  {expenses.reduce(
+                    (prevValue, currValue) => prevValue + currValue.amount,
+                    0
+                  )}
+                </TableCell>
+              </TableRow>
+            </TableFooter>
           </Table>
         </TableContainer>
       </Box>
